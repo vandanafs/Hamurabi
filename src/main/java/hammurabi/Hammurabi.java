@@ -26,7 +26,7 @@ public class Hammurabi {
         boolean uprising;
         int immigrants = 0;
         int harvest = 0;
-        int cropYield = 0;
+        int harvestPercent = 0;
         int ratGrain = 0;
         int landValue = 19;
 
@@ -40,23 +40,23 @@ public class Hammurabi {
             // Getting user inputs and adjusting inventories of land and grain
             acresToBuy = askHowManyAcresToBuy(landValue, grainBushels);
             acresLand += acresToBuy;
-            grainBushels -= acresToBuy * CostOfLand;
+            grainBushels -= acresToBuy * landValue;
 
             // If not buying land, ask if selling and make adjustments to land and grain
             if (acresToBuy == 0) {
                 acresToSell = askHowManyAcresToSell(acresLand);
                 acresLand -= acresToSell;
-                grainBushels += CostOfLand * acresToSell;
+                grainBushels += landValue * acresToSell;
             }
 
-            // Determine people food allocation and amount of land to plant
+          /*  // Determine people food allocation and amount of land to plant
             feedThePeople = askHowMuchGrainToFeedPeople(grainBushels);
-            acresToPlant = askHowManyAcresToPlant(acresLand, population, grainBushels);
+            acresToPlant = askHowManyAcresToPlant(population, acresLand, grainBushels);  */
 
-            // Calculating the harvest and crop yield
+            // Calculating the harvest and harvestPercent
             harvest = harvest(acresToPlant);
             if (acresToPlant > 0) {
-                cropYield = harvest / acresToPlant;
+                harvestPercent = harvest / acresToPlant;
             }
 
             // Check on rats, plagues, and starvation
@@ -78,19 +78,9 @@ public class Hammurabi {
             landValue = newCostOfLand();
 
             // print out end of year report
-            System.out.println(printSummary(yearNumber, starvationDeaths, immigrants, population, harvest, cropYield, ratGrain, grainBushels, acresLand, landValue));
+            System.out.println(printSummary(yearNumber, starvationDeaths, immigrants, population, harvest, harvestPercent, ratGrain, grainBushels, acresLand, landValue));
 
-            // Get ready for next year
-            acresToBuy = 0;
-            acresToSell = 0;
-            acresToPlant = 0;
-            feedThePeople = 0;
-            plagueDeaths = 0;
-            starvationDeaths = 0;
-            harvest = 0;
-            cropYield = 0;
-            immigrants = 0;
-            ratGrain = 0;
+
 
             // End of 10 year term
             if (yearNumber == 10) {
@@ -139,13 +129,13 @@ public class Hammurabi {
      * @return a  summary status
      */
     String printSummary(int yearNumber, int starvationDeaths, int immigrants, int population, int harvest,
-                        int cropYield, int ratGrain, int grainBushels, int acresLand, int landValue) {
+                        int harvestPercent, int ratGrain, int grainBushels, int acresLand, int landValue) {
         String annualMessage = "O great Hammurabi!\n\n"
                 + "You are in year " + yearNumber + " of your ten rule\n"
                 + "In the previous year " + starvationDeaths + " people starved to death.\n"
                 + "In the previous year " + immigrants + " people entered the kingdom.\n"
                 + "The population is now " + population + ".\n"
-                + "We harvested " + harvest + " bushels at " + cropYield + " bushels per acre.\n"
+                + "We harvested " + harvest + " bushels at " + harvestPercent + " bushels per acre.\n"
                 + "Rats destroyed " + ratGrain + " bushels, leaving " + grainBushels + " bushels in storage.\n"
                 + "The city owns " + acresLand + " acres of land.\n"
                 + "Land is currently worth " + landValue + " bushels per acre.\n";
@@ -171,85 +161,81 @@ public class Hammurabi {
     }
 
 
-    public int askHowManyAcresToBuy(int price, int bushels) {
-        return 0;
-    }
+    public int askHowManyAcresToBuy(int price, int bushels) {return 0;}
 
 
-    public int askHowManyAcresToSell(int acresOwned) {
+    public int askHowManyAcresToSell(int acresOwned) {return 0;}
 
 
-        public int askHowManyAcresToPlant ( int acresOwned, int population, int bushels){
-
-            return 0;
-        }
+    public int askHowManyAcresToPlant(int acresOwned, int population, int bushels){return 0;}
 
 
-        public int askHowMuchGrainToFeedPeople ( int bushels){
-            return 0;
-        }
+    public int askHowMuchGrainToFeedPeople ( int bushels){return 0;}
 
 
-        public int askHowManyAcresToPlant ( int acresOwned, int population, int bushels){
-            return 0;
-        }
+    public int askHowManyAcresToPlant ( int acresOwned, int population, int bushels){return 0;}
 
 
-        public int plagueDeaths ( int population){
-            int plagueDeaths = 0;
-            int plagueIndex = rand.nextInt(101);
-            if (plagueIndex > 85) {
+    public int plagueDeaths ( int population){
+        int plagueDeaths = 0;
+        int plagueIndex = rand.nextInt(101);
+           if (plagueIndex > 85) {
                 plagueDeaths = (int) (0.5 * population);
             }
             return plagueDeaths;
         }
-                 /
 
-        public boolean uprising ( int population, int howManyPeopleStarved)
-        {
-            return howManyPeopleStarved > (population * .45);
+
+    public boolean uprising ( int population, int howManyPeopleStarved) {
+           if( howManyPeopleStarved > (population * .45)){
+            System.out.println("You failed, and were outed from office...");
+            return true;
         }
+           return false;
+    }
 
-        int starvationDeaths ( int population, int bushelsFedToPeople){
-            int starvationDeaths = 0;
-            int peopleFed = bushelsFedToPeople / 20;
+
+    int starvationDeaths ( int population, int bushelsFedToPeople){
+        int starvationDeaths = 0;
+        int peopleFed = bushelsFedToPeople / 20;
             if (population > bushelsFedToPeople / 20) {
                 starvationDeaths = population - bushelsFedToPeople / 20;
             }
             return starvationDeaths;
-
         }
 
 
-        public int immigrants ( int population, int acresOwned, int grainInStorage){
+    public int immigrants(int population, int acresOwned, int grainInStorage){
             int immigrants = (20 * acresOwned + grainInStorage) / (100 * population) + 1;
             return immigrants;
         }
 
 
-        public int harvest ( int acres, int bushelsUsedAsSeed){
 
-            int bushels = 0;
-            int cropYieldIndex = rand.nextInt(6) + 1;
-            bushels = acres * cropYieldIndex - bushelsUsedAsSeed;
-            return bushels;
-
+    public int harvest(int acres){
+        int harvest = 0;
+        int harvestPercent = rand.nextInt(7) + 1;
+        int bushelsUsedAsSeed = 0;
+        harvest = acres * harvestPercent - bushelsUsedAsSeed;
+        return harvest;
         }
 
 
-        public int grainEatenByRats ( int bushels){
+    public int grainEatenByRats(int bushels){
             int grainEaten = 0;
             int ratIndex = rand.nextInt(101);
             if (ratIndex > 60) {
-                grainEaten = (rand.nextInt(30, 10) + 1) * bushels;
+                grainEaten = (rand.nextInt(10, 30) * bushels) / 100;
             }
+
             return grainEaten;
         }
 
 
-        {
-            return 17 + rand.nextInt(7);
-        }
+    public int newCostOfLand(){
+            return rand.nextInt(17, 24);}
+
+
 
         /**
          * Prints the given message (which should ask the user for some integral
@@ -260,7 +246,7 @@ public class Hammurabi {
          * @param message The request to present to the user.
          * @return The user's numeric response.
          */
-        int getNumber (String message){
+        int getNumber(String message){
             while (true) {
                 System.out.print(message);
                 try {
