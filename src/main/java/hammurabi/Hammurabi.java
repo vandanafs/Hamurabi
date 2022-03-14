@@ -31,19 +31,25 @@ public class Hammurabi {
         int    immigrants=5;
         int grainsEatenByRats=200;
 
+        //final summary variables
+        int totalStarvationDeaths = 0;
+        int totalAcresLand=0;
+        int totalPopulation=0;
+
         while(year<= 10) {
             // population=population+immigrants;
             population=(population+immigrants)-(starvationDeaths+plagueDeaths);
-            System.out.println("O great Hammurabi!" + "\n" +
-                    "You are in year " +year+ " of your ten year rule." + "\n" +
-                    " In the previous year  "+plagueDeaths+" people starved to death." +starvationDeaths+ "\n" +
-                    "In the previous year "+   immigrants+" people entered the kingdom." + "\n" +
-                    "The population is now "+population+"." + "\n" +
-                    " We harvested "+harvest+" bushels at "+ harvestPerAcre+" bushels per acre." + "\n" +
-                    " Rats destroyed "+grainsEatenByRats+" bushels, leaving  "+bushelsTotal+"  bushels in storage." + "\n" +
-                    " The city owns"+acresTotal+" acres of land." + "\n" +
-                    " Land is currently worth "+pricePerAcre+" bushels per acre.");
-            System.out.println("---------------");
+//            System.out.println("O great Hammurabi!" + "\n" +
+//                    "You are in year " +year+ " of your ten year rule." + "\n" +
+//                    " In the previous year  "+starvationDeaths+" people starved to death."+"\n" +
+//                    " In the previous year  "+plagueDeaths+" people died due to plague ."+"\n" +
+//                    "In the previous year "+   immigrants+" people entered the kingdom." + "\n" +
+//                    "The population is now "+population+"." + "\n" +
+//                    " We harvested "+harvest+" bushels at "+ harvestPerAcre+" bushels per acre." + "\n" +
+//                    " Rats destroyed "+grainsEatenByRats+" bushels, leaving  "+bushelsTotal+"  bushels in storage." + "\n" +
+//                    " The city owns "+acresTotal+" acres of land." + "\n" +
+//                    " Land is currently worth "+pricePerAcre+" bushels per acre.");
+//            System.out.println("---------------");
             int newAcres = askHowManyAcresToBuy(pricePerAcre, bushelsTotal);
             int buyBushel = newAcres * pricePerAcre;  //10* 19=190
             bushelsTotal = bushelsTotal - buyBushel;  //total bushel updated
@@ -91,16 +97,27 @@ public class Hammurabi {
             //How much land costs (for deciding what to do next).
             pricePerAcre=newCostOfLand();
 
-            System.out.println("harvest:" + harvest);
-            System.out.println("");
-            System.out.println("Acres total :" + acresTotal);
-            System.out.println("total Bushels:" + bushelsTotal);
-            System.out.println("Total acres planted:" + acresPlanted);
+            printSummary(year,plagueDeaths,starvationDeaths,immigrants,population,grainsEatenByRats,harvest,
+                    harvestPerAcre,bushelsTotal,acresTotal,pricePerAcre);
+//printSummary(plagueDeaths,starvationDeaths,immigrants,grainsEatenByRats,harvest,pricePerAcre);
+//            System.out.println("harvest:" + harvest);
+//            System.out.println("");
+//            System.out.println("Acres total :" + acresTotal);
+//            System.out.println("total Bushels:" + bushelsTotal);
+//            System.out.println("Total acres planted:" + acresPlanted);
             year++;
-            System.out.println("End of the year "+year);
-            System.out.println("-------------------");
+         //   System.out.println("End of the year "+year);
+           // System.out.println("-------------------");
+       //    year++;
+
+            // add totals for end of game summary
+            totalStarvationDeaths = totalStarvationDeaths + starvationDeaths;
+            totalAcresLand=totalAcresLand + acresTotal;
+            totalPopulation = totalPopulation + population;
         } //end of while loop
 
+
+        finalSummary(totalStarvationDeaths,totalAcresLand,totalPopulation);
     }
 
     /**
@@ -193,7 +210,9 @@ public class Hammurabi {
      */
     public int plagueDeaths(int population){  //100
         int plagueDeath=0;
+
         if( rand.nextDouble() <0.15){  // upto .14 plague has hit
+
             plagueDeath= population/2;
         }
         return plagueDeath;
@@ -297,6 +316,47 @@ public class Hammurabi {
             }
         }
     }
+
+    void printSummary ( int year, int PlagueDeaths, int starvationDeaths, int Immigrants, int population, int grainsEatenByRats, int Harvest,
+                        int HarvestPerAcre, int bushelsTotal, int acresTotal, int pricePerAcre ) {
+
+//        System.out.println("Year end Summary:"+"\n" +
+//                "Plague Deaths:"+PlagueDeaths + "\n" +
+//                "People Starved to Death:"+starvationDeaths + "\n" +
+//                "People entered:"+Immigrants + "\n" +
+//                "Grains eater by rats:"+grainsEatenByRats + "\n" +
+//                "Harvest this year:"+Harvest + "\n" +
+//                "Price per Acre:"+pricePerAcre + "\n");
+
+        System.out.println("O great Hammurabi!" + "\n" +
+                "You are in year " +year+ " of your ten year rule." + "\n" +
+                " In the previous year  "+starvationDeaths+" people starved to death."+"\n" +
+                " In the previous year  "+PlagueDeaths+" people died due to plague ."+"\n" +
+                "In the previous year "+   Immigrants+" people entered the kingdom." + "\n" +
+                "The population is now "+population+"." + "\n" +
+                " We harvested "+Harvest+" bushels at "+ HarvestPerAcre+" bushels per acre." + "\n" +
+                " Rats destroyed "+grainsEatenByRats+" bushels, leaving  "+bushelsTotal+"  bushels in storage." + "\n" +
+                " The city owns "+acresTotal+" acres of land." + "\n" +
+                " Land is currently worth "+pricePerAcre+" bushels per acre.");
+        System.out.println("---------------");
+    }
+
+    void finalSummary(int totalStarvationDeaths,int totalAcresLand, int totalPopulation)
+    {
+        int starved = (int) ((double)((totalStarvationDeaths/totalPopulation))*100);
+        double acresperperson = (totalAcresLand/totalPopulation);
+        if(starved>=45 && acresperperson<0) {
+            System.out.println("Hey Hammurabi!" + "\n" +
+                    "you were a bad mayer!" + "\n");
+        }
+        else {
+
+            System.out.println("Hey Hammurabi!" + "\n" +
+                    "you tried your best!" + "\n");
+        }
+
+    }
+
 
 
 }
