@@ -1,3 +1,5 @@
+package hammurabi;
+
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -196,13 +198,13 @@ public class Hammurabi {
      * @param bushelsFedToPeople
      * @return
      */
-    int starvationDeaths(int population, int bushelsFedToPeople){
+   public  int starvationDeaths(int population, int bushelsFedToPeople){
         int starvationDeaths=0;
-        if(population*20 <= bushelsFedToPeople) {
+        if(population*20 <= bushelsFedToPeople) {// 100*20=2000<=2000
             starvationDeaths=0;
         } else {
-            int bal=population*20-bushelsFedToPeople;  //1000
-            starvationDeaths= bal/20; //50
+            double  bal=population*20-bushelsFedToPeople;  //1000
+            starvationDeaths= (int) Math.ceil(bal/20); //50
         }
         return starvationDeaths;
     }
@@ -214,7 +216,11 @@ public class Hammurabi {
      * @return  -->
      */
     public boolean uprising(int population,int howManyPeopleStarved){
-        int percentage = howManyPeopleStarved/population;
+        System.out.println("starved  "+howManyPeopleStarved+"ppl  "+population);
+        double percentageinp1 = howManyPeopleStarved;
+        double percentageinp2 = population;
+       double percentage =(percentageinp1/percentageinp2)*100;
+        System.out.println(percentage);
         if( percentage > 45){
             return true;
         }else{
@@ -229,8 +235,10 @@ public class Hammurabi {
      * @param grainInStorage
      * @return  --> return immigrants
      */
-    int immigrants(int population, int acresOwned, int grainInStorage){
-        return  (20 * acresOwned+grainInStorage) / ((100 *population) + 1);
+    public int immigrants ( int population, int acresOwned, int grainInStorage ){
+        int num= (int) Math.ceil((20 * acresOwned)+grainInStorage) / (100 *population) + 1;
+      //  System.out.println(num+ "  immigants");
+        return num;
 
     }
 
@@ -240,7 +248,7 @@ public class Hammurabi {
      * @param bushelsUsedAsSeed
      * @return
      */
-    int harvest(int acres, int bushelsUsedAsSeed){
+   public  int harvest(int acres, int bushelsUsedAsSeed){
         //System.out.println("Math random :"+Math.floor(Math.random() * 8) + 1);
         int rand1 = rand.nextInt(6-1+1)+1;
         System.out.println("random 1 to 6: "+rand1);
@@ -252,11 +260,11 @@ public class Hammurabi {
      * @param bushels
      * @return---> amount of grain eaten by rats (possibly zero).
      */
-    int grainEatenByRats(int bushels){  //3000
-        if(  rand.nextInt(100) < 40) { //upto 40
+    public int grainEatenByRats ( int bushels ){  //3000
+        if(  rand.nextInt(100) < 40) { //upto 0 to 39
             int perRatsEating= 10 + rand.nextInt(21); //between 10 to 30
-            int grainEatenByRats= bushels *(perRatsEating/100);
-            return grainEatenByRats;
+            double grainEatenByRats= bushels * perRatsEating/100;
+            return (int) grainEatenByRats;
         }
         return 0;
     }
@@ -265,7 +273,7 @@ public class Hammurabi {
      * ranges from 17 to 23 bushels per acre.
      * @return --->Return the new price
      */
-    int newCostOfLand(){
+    public int newCostOfLand (){
         int pp=17+rand.nextInt(7);
         System.out.println("Random price:"+pp);
         return  pp;
