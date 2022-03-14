@@ -54,7 +54,12 @@ public class Hammurabi {
                 bushelsTotal = bushelsTotal + sell * pricePerAcre;
             }
             int feed = askHowMuchGrainToFeedPeople(bushelsTotal);
-            bushelsTotal = bushelsTotal - feed;
+            if(feed>bushelsTotal){
+                System.out.println("You don't have enough grains ");
+                bushelsTotal=0;
+            }else {
+                bushelsTotal = bushelsTotal - feed;
+            }
             int acresPlanted = askHowManyAcresToPlant(acresTotal, population, bushelsTotal);
             System.out.println("aceres planted:" + acresPlanted);
             //    bushelsTotal=bushelsTotal-(acresPlanted*2);  //confirm this
@@ -75,7 +80,9 @@ public class Hammurabi {
 
             //How good the harvest is.
             harvest = harvest(acresPlanted, acresPlanted * 2);
-            harvestPerAcre=harvest/acresPlanted;
+            if(acresPlanted >0 ) {
+                harvestPerAcre = harvest / acresPlanted;
+            }
             bushelsTotal = bushelsTotal + harvest;
 
             //If you have a problem with rats, and how much grain they eat.
@@ -105,7 +112,7 @@ public class Hammurabi {
     public int askHowManyAcresToBuy(int price,int bushels){  //(19, 190)
         int buy=0;
         buy=getNumber("O great Hammurabi, how many acres do you want to buy?");
-        System.out.println("buy  -->"+buy);
+      //  System.out.println("buy  -->"+buy);
         if(buy*price <bushels){  //10*19=190<2800 this comes before feeding
             return buy;
         }
@@ -216,11 +223,11 @@ public class Hammurabi {
      * @return  -->
      */
     public boolean uprising(int population,int howManyPeopleStarved){
-        System.out.println("starved  "+howManyPeopleStarved+"ppl  "+population);
+      //  System.out.println("starved  "+howManyPeopleStarved+"ppl  "+population);
         double percentageinp1 = howManyPeopleStarved;
         double percentageinp2 = population;
-       double percentage =(percentageinp1/percentageinp2)*100;
-        System.out.println(percentage);
+        double percentage =(percentageinp1/percentageinp2)*100;
+       // System.out.println(percentage);
         if( percentage > 45){
             return true;
         }else{
@@ -251,7 +258,7 @@ public class Hammurabi {
    public  int harvest(int acres, int bushelsUsedAsSeed){
         //System.out.println("Math random :"+Math.floor(Math.random() * 8) + 1);
         int rand1 = rand.nextInt(6-1+1)+1;
-        System.out.println("random 1 to 6: "+rand1);
+       // System.out.println("random 1 to 6: "+rand1);
         return (acres*rand1);
     }
 
@@ -275,7 +282,7 @@ public class Hammurabi {
      */
     public int newCostOfLand (){
         int pp=17+rand.nextInt(7);
-        System.out.println("Random price:"+pp);
+       // System.out.println("Random price:"+pp);
         return  pp;
     }
 
